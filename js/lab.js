@@ -7,7 +7,7 @@
 
   const SLIDERS = [
     { key: 'w', term: 'w', min: -3, max: 3, step: 0.01, d: 2 },
-    { key: 'b', term: 'b', min: -10, max: 10, step: 0.01, d: 2 },
+    { key: 'b', term: 'b', min: -6, max: 6, step: 0.01, d: 2 },
     { key: 'x', term: 'x', min: 0, max: 10, step: 1, d: 0, money: true },
     { key: 'eta', term: 'eta', label: 'η', min: 0.01, max: 1, step: 0.01, d: 2 },
   ];
@@ -108,9 +108,9 @@
 
   function arith() {
     const { z, a } = out(state.x), A = actOf();
-    const zl = `z = ${R.tn(state.w)}\\cdot ${state.x} + ${R.tn(state.b, 2, true)} = ${R.tn(z)}`;
+    const zl = `\\T{z}{z} = ${R.tn(state.w)}\\cdot ${state.x} + ${R.tn(state.b, 2, true)} = ${R.tn(z)}`;
     let al;
-    if (state.act === 'sigmoid') al = `p = \\sigma(${R.tn(z)}) = \\dfrac{1}{1 + ${Math.exp(-z) > 9999 ? '\\text{huge}' : R.tn(Math.exp(-z))}} = ${R.tn(a)}`;
+    if (state.act === 'sigmoid') al = `\\T{p}{p} = \\T{sigmoid}{\\sigma}(${R.tn(z)}) = \\dfrac{1}{1 + ${Math.exp(-z) > 9999 ? '\\text{huge}' : R.tn(Math.exp(-z))}} = ${R.tn(a)}`;
     else if (state.act === 'linear') al = `a = z = ${R.tn(a)}`;
     else if (state.act === 'relu') al = `a = \\max(0, ${R.tn(z)}) = ${R.tn(a)}`;
     else al = `a = \\tanh(${R.tn(z)}) = ${R.tn(a)}`;
@@ -130,7 +130,7 @@
       lo = Math.min(...vals); hi = Math.max(...vals);
       const pad = (hi - lo) * 0.08 || 1; lo -= pad; hi += pad;
     }
-    const L = 58, Rr = 410, T = 14, B = 222;
+    const L = 50, Rr = 322, T = 12, B = 214;
     const X = (o) => L + o / 10 * (Rr - L), Y = (v) => B - (v - lo) / (hi - lo) * (B - T);
     let d = ''; for (let i = 0; i <= 200; i++) { const o = i / 20; d += (i ? 'L' : 'M') + X(o).toFixed(1) + ',' + Y(out(o).a).toFixed(1); }
     let ticks = ''; for (let o = 0; o <= 10; o += 1) ticks += `<line x1="${X(o)}" y1="${B}" x2="${X(o)}" y2="${B + 4}" stroke="var(--mut)"/>` + (o % 2 === 0 ? `<text x="${X(o)}" y="${B + 16}" font-size="11" text-anchor="middle">$${o}</text>` : '');
@@ -145,8 +145,8 @@
       ${ffLine}${ticks}${yt}
       <path d="${d}" fill="none" stroke="var(--acc)" stroke-width="2.5"/>
       <circle cx="${X(state.x)}" cy="${Math.max(T, Math.min(B, Y(cur)))}" r="5.5" fill="var(--acc2)"/>
-      <text x="${(L + Rr) / 2}" y="${B + 36}" font-size="11.5" text-anchor="middle" data-term="x">Offer to the responder ($, out of a $10 pot)</text>
-      <text x="14" y="${(T + B) / 2}" font-size="11.5" text-anchor="middle" transform="rotate(-90 14 ${(T + B) / 2})" data-term="${A.probability ? 'p' : 'activation'}">${ylab}</text>
+      <text x="${(L + Rr) / 2}" y="${B + 36}" font-size="12" text-anchor="middle" data-term="x">Offer to the responder ($ of a $10 pot)</text>
+      <text x="12" y="${(T + B) / 2}" font-size="12" text-anchor="middle" transform="rotate(-90 12 ${(T + B) / 2})" data-term="${A.probability ? 'p' : 'activation'}">${ylab}</text>
       <text x="${Rr}" y="${Y(A.threshold) - 4}" font-size="10" text-anchor="end" style="fill:var(--mut)">accept above this line</text>`;
   }
 

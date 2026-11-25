@@ -10,6 +10,8 @@
   const click = (el) => el && el.dispatchEvent(new MouseEvent('click', { bubbles: true }));
   const S = root.Lab.state;
   try {
+    check('lesson 1 math has a hoverable P(reject)', !!q('#math [data-term="preject"]'), 'missing');
+    check('lab arithmetic has hoverable z', !!q('#arith [data-term="z"]'), 'missing');
     location.hash = '#/2'; root.dispatchEvent(new HashChangeEvent('hashchange'));
     check('lesson 2 starts at w = 0.1, b = 0, x = 8', S.w === 0.1 && S.b === 0 && S.x === 8, [S.w, S.b, S.x]);
     click(q('[data-train="step"]'));
@@ -27,10 +29,14 @@
 
     location.hash = '#/3'; root.dispatchEvent(new HashChangeEvent('hashchange'));
     check('lesson 3 opens on the Code tab', S.tab === 'code' && !!q('#code-lines'), S.tab);
-    for (let i = 0; i < 6; i++) click(q('[data-run="line"]'));
+    for (let i = 0; i < 10; i++) click(q('[data-run="line"]'));  // line 1, then lines 2..10 for offer $0
+    for (let i = 0; i < 4; i++) click(q('[data-run="line"]'));   // lines 2..5 for offer $1, next line 6
     const cur = q('#code-lines .ln.cur .no');
-    check('six line steps land on line 7', cur && cur.textContent === '7', cur && cur.textContent);
-    check('variables table shows error', /−0\.500|-0\.500/.test(q('#code-vars').textContent) || q('#code-vars').textContent.includes('0.500'), q('#code-vars').textContent.slice(0, 80));
+    check('14 line steps land on line 6, offer $1', cur && cur.textContent === '6' && q('#code-vars').textContent.includes('$1'), cur && cur.textContent);
+    const st1 = Neuron.step(Neuron.step(0.1, 0, 0, 0.1).wNew, Neuron.step(0.1, 0, 0, 0.1).bNew, 1, 0.1);
+    check('variables table shows p for offer $1', q('#code-vars').textContent.includes(st1.p.toFixed(3)), q('#code-vars').textContent.replace(/\s+/g, ' ').slice(0, 120));
+    click(q('[data-run="line"]'));
+    check('one more line computes the error', q('#code-vars').textContent.includes(R.fmt(st1.error, 3)), R.fmt(st1.error, 3));
     click(q('[data-run="restart"]'));
     click(q('[data-tab="code"]'));
     const sp = q('#code-speed'); sp.value = sp.max; sp.dispatchEvent(new Event('input', { bubbles: true }));
