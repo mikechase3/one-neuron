@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One Neuron Lessons</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="css/style.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="js/neuron.js"></script>
+<script defer src="js/glossary.js"></script>
+<script defer src="js/lessons.js"></script>
+<script defer src="js/render.js"></script>
+<script defer src="js/lab.js"></script>
+<script defer src="js/stepper.js"></script>
+<script defer src="js/app.js"></script>
+<script defer src="js/selftest.js"></script>
+</head>
+<body>
+<header class="top">
+  <span class="brand">one-neuron</span>
+  <button id="prev" type="button">&larr; Back</button>
+  <span id="lesson-title" class="lesson-title"></span>
+  <button id="next" type="button">Next &rarr;</button>
+  <span class="spacer"></span>
+  <button id="reset-lesson" type="button" title="Put the lab back where this lesson starts">Reset to lesson start</button>
+  <button id="open-glossary" type="button">Glossary</button>
+  <span class="badge" title="Laid out for a 1920x1080 screen">widescreen only</span>
+</header>
+
+<main class="cols">
+  <section class="col reading" id="reading" aria-label="Reading"></section>
+
+  <section class="col lab" aria-label="Lab">
+    <div class="panel"><svg id="diagram" viewBox="0 0 760 156" style="max-height:140px" width="100%" role="img" aria-label="The neuron with its current numbers"></svg></div>
+
+    <div class="panel tiles" id="tiles" role="radiogroup" aria-label="Activation function"></div>
+
+    <div class="row2">
+      <div class="panel params">
+        <div class="ph">Parameters <select id="act" aria-label="activation function"></select></div>
+        <div id="sliders"></div>
+        <div id="arith" class="arith"></div>
+      </div>
+      <div class="panel curve">
+        <svg id="curve" viewBox="0 0 420 270" width="100%" role="img" aria-label="Output against offer"></svg>
+      </div>
+    </div>
+
+    <div class="panel tabs">
+      <div class="tabbar" id="tabbar" role="tablist"></div>
+      <div id="tab-table" class="tab"></div>
+      <div id="tab-train" class="tab"></div>
+      <div id="tab-code" class="tab"></div>
+    </div>
+  </section>
+
+  <section class="col math" aria-label="Math and terms">
+    <div class="panel"><div class="ph">This lesson's math</div><div id="math"></div></div>
+    <div class="panel"><div class="ph">New terms in this lesson</div><dl id="newterms" class="terms"></dl>
+      <p class="small">Terms from earlier lessons are dotted-underlined: hover them. Everything is in the Glossary.</p></div>
+  </section>
+</main>
+
+<div id="callout" class="callout-pop" role="tooltip" hidden></div>
+
+<aside id="glossary" class="drawer" hidden aria-label="Glossary">
+  <div class="drawer-head"><b>Glossary</b> <button id="close-glossary" type="button">Close</button></div>
+  <div id="glossary-body"></div>
+</aside>
+</body>
+</html>

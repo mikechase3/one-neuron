@@ -1,0 +1,52 @@
+// Every term and symbol the lessons use. One source: hover callouts, the "new terms" list and the
+// glossary drawer all read this. lesson = where it is introduced.
+(function (root) {
+  'use strict';
+  const GLOSSARY = {
+    ultimatum: { label: 'Ultimatum Game', lesson: 1, def: 'A proposer splits a $10 pot and offers the responder x dollars. Accept: the responder gets x, the proposer the rest. Reject: both get $0.' },
+    equilibrium: { label: 'equilibrium (subgame-perfect)', lesson: 1, def: 'The game-theory answer for a purely self-interested responder: accept any offer above $0, because something beats nothing. Real people reject unfair offers.' },
+    neuron: { label: 'neuron (node)', lesson: 1, def: 'One unit: multiplies each input by a weight, adds a bias, then applies an activation function.' },
+    input: { label: 'input x', lesson: 1, def: 'What the neuron is given: here the offer x, $0 to $10. Training never changes it.' },
+    x: { label: 'x', lesson: 1, def: 'The input: the offer to the responder, in dollars out of a $10 pot.' },
+    w: { label: 'weight w', lesson: 1, def: 'How hard the input pushes the output. Sets how sharply the neuron switches from reject to accept. Can be negative. Trained.' },
+    b: { label: 'bias b', lesson: 1, def: 'A constant nudge added before the activation. Sets WHERE the neuron switches (the 50/50 point). Trained, like w.' },
+    parameters: { label: 'parameters', lesson: 1, def: 'All the weights and biases: the numbers training changes. This neuron has 2. A "7B" language model has about 7 billion.' },
+    init: { label: 'initialization', lesson: 1, def: 'Before training, weights and biases start as small random numbers. Training then nudges them.' },
+    z: { label: 'weighted sum z', lesson: 1, def: 'z = w·x + b, the score before the activation (the "pre-activation"). At the output layer of a language model this raw score is called a logit.' },
+    logit: { label: 'logit', lesson: 1, def: 'The raw score at a network\'s output, before it becomes a probability. A language model produces one logit per word in its vocabulary.' },
+    activation: { label: 'activation function', lesson: 1, def: 'The function each node applies to its z: a(z). Written generically as a(z), f(z) or φ(z); sigmoid has its own symbol σ; tanh and ReLU go by name.' },
+    sigmoid: { label: 'sigmoid σ', lesson: 1, def: 'σ(z) = 1 / (1 + e^(−z)). Squashes any z into 0 to 1. σ(0) = 0.5; large positive z gives about 1; large negative z about 0.' },
+    e: { label: 'e', lesson: 1, def: 'Euler\'s number, about 2.718. e^(−z) means 1 / e^z.' },
+    negexp: { label: 'negative exponent', lesson: 1, def: 'Flip it: a^(−n) = 1 / a^n. 4^(−2) = 1/16, e^(−3) = 1/e³ ≈ 0.05. Not the same as a fraction exponent: a^(1/n) is the nth root, 16^(1/2) = 4.' },
+    p: { label: 'p = P(accept)', lesson: 1, def: 'The sigmoid\'s output, read as the probability the neuron accepts: p = σ(z). p > 0.5 exactly when z > 0.' },
+    preject: { label: 'P(reject)', lesson: 1, def: 'The probability of rejecting: 1 − p. With one output node, the two always add to 1.' },
+    forward: { label: 'forward pass', lesson: 1, def: 'Running an input through the network to get an output, with the parameters held fixed. Nothing is learned.' },
+    fifty: { label: '50/50 point', lesson: 1, def: 'The offer where p = 0.5, i.e. z = 0, so x = −b / w. Below it the neuron leans reject, above it accept.' },
+    hidden: { label: 'hidden layer', lesson: 1, def: 'Nodes between the input and the output. "Deep" means many hidden layers. Each node: a weighted sum of the layer before, plus a bias, then an activation.' },
+    linear: { label: 'linear (no activation)', lesson: 1, def: 'a(z) = z: no squashing. Not a probability. Stacked layers with no activation collapse into one straight line, so depth buys nothing.' },
+    tanh: { label: 'tanh', lesson: 1, def: 'tanh(z) = (e^z − e^(−z)) / (e^z + e^(−z)). Like sigmoid but from −1 to 1, centred on 0.' },
+    relu: { label: 'ReLU', lesson: 1, def: 'ReLU(z) = max(0, z). Zero for negative z, a straight line above. The usual choice in hidden layers; language models use smoother cousins (SiLU, GELU).' },
+    y: { label: 'target y (label)', lesson: 2, def: 'The answer we want for an example. Not part of the network: it is what the output p is compared to. Here y = 1 (accept) if x ≥ 5, else 0.' },
+    label: { label: 'label rule', lesson: 2, def: 'How each example\'s target is decided. Lesson 2 uses a fair-split rule: accept $5 or more.' },
+    error: { label: 'error signal p − y', lesson: 2, def: 'How far off the output was, and in which direction. Negative: it should have been higher. Positive: lower. It is ∂L/∂z for sigmoid with cross-entropy loss.' },
+    loss: { label: 'loss L', lesson: 2, def: 'One number for how wrong the network is. Here cross-entropy: L = −[y ln p + (1 − y) ln(1 − p)]. Training lowers it.' },
+    gradient: { label: 'gradient', lesson: 2, def: 'How much the loss changes when you nudge a parameter: ∂L/∂w and ∂L/∂b. A direction and a size, NOT the new value of the parameter.' },
+    partial: { label: '∂ (partial)', lesson: 2, def: 'Read "partial" or "del". ∂L/∂w: how L changes when only w moves, everything else held still.' },
+    eta: { label: 'learning rate η', lesson: 2, def: 'η is the Greek letter eta ("AY-tuh"). How big a step to take against the gradient. Too small: slow. Too big: overshoots.' },
+    update: { label: 'update rule', lesson: 2, def: 'w ← w − η·∂L/∂w and b ← b − η·∂L/∂b. Step against the gradient, scaled by η.' },
+    descent: { label: 'gradient descent', lesson: 2, def: 'Repeatedly stepping every parameter against its gradient to walk the loss downhill. Uses the gradients that backpropagation computes.' },
+    backprop: { label: 'backpropagation', lesson: 2, def: 'Computing every gradient by passing the error backwards from the output through each layer with the chain rule. Every training step does it.' },
+    chain: { label: 'chain rule', lesson: 2, def: 'Multiply the derivatives along the path: ∂L/∂w = ∂L/∂z · ∂z/∂w = (p − y)·x. In a deep network the chain continues back through every layer.' },
+    dzdw: { label: '∂z/∂w = x', lesson: 2, def: 'Nudging w changes z by x times as much. So w gets blamed in proportion to its input; an input of 0 means w had no effect and gets no blame.' },
+    dzdb: { label: '∂z/∂b = 1', lesson: 2, def: 'Nudging any bias changes z by exactly the same amount, so a bias\'s gradient is just the error.' },
+    step: { label: 'step', lesson: 2, def: 'One update of the parameters from one example (here, one offer).' },
+    epoch: { label: 'epoch', lesson: 3, def: 'One pass over every training example: here 11 steps, offers $0 to $10 in order.' },
+    convergence: { label: 'convergence', lesson: 3, def: 'Training settling down: the loss stops falling noticeably. Here the decisions settle quickly; the weights keep growing slowly forever.' },
+    overshoot: { label: 'overshooting', lesson: 3, def: 'With a large η, a step jumps past the low point of the loss, so the loss can rise before it falls.' },
+    margin: { label: 'margin', lesson: 3, def: 'How far the boundary sits from the nearest examples. Trained long enough, this neuron puts its 50/50 point halfway between $4 and $5, the widest margin.' },
+    softmax: { label: 'softmax', lesson: 9, def: 'Parked: turns several logits into probabilities that add to 1. How a language model scores every possible next word.' },
+    sampling: { label: 'sampling', lesson: 9, def: 'Parked: the "weighted die" that picks one choice from the probabilities. Temperature, top_p and top_k act here.' },
+  };
+  if (typeof module !== 'undefined' && module.exports) module.exports = { GLOSSARY };
+  else root.GLOSSARY = GLOSSARY;
+})(typeof window !== 'undefined' ? window : globalThis);
