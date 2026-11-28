@@ -106,7 +106,7 @@
 <li><b>Update:</b> \\( w \\leftarrow 0.1 - 0.1 \\times (-2.48) = \\) <b>0.348</b> and \\( b \\leftarrow 0 - 0.1 \\times (-0.310) = \\) <b>0.031</b>.</li>
 <li><b>Check:</b> \\( p(\\$8) \\) went from 0.69 to 0.94.</li>
 </ol>
-<p class="callout"><b>Watch out:</b> −2.48 is the gradient, not the new weight. The new weight is the old one minus η times the gradient: 0.348. Likewise the new bias is 0.031, not 0.31.</p>
+<p class="callout"><b>Watch out:</b> −2.48 is the gradient, not the new weight. The new weight is the old one minus η times the gradient: 0.348. The gradient only says which way to push and how hard; η scales the push.</p>
 
 <h2>Step 2: offer $2, target y = 0</h2>
 <p>[[set:{"x":2}|now offer $2]] (keep the new w and b) and press <b>1 step on this x</b> again.</p>
